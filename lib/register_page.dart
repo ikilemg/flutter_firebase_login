@@ -2,6 +2,9 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_login/widget/email_field_widget.dart';
+import 'package:flutter_login/widget/password_field_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -19,38 +22,21 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   Future signUp() async {
-    if (isTextEmpty()) {
-      if (_passwordController.text.trim() ==
-          _confirmPasswordController.text.trim()) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: Text('Make sure the passwords are the same '),
-          ),
-        );
-      }
-    }
-  }
-
-  bool isTextEmpty() {
-    if (_emailController.text.trim() == '' ||
-        _passwordController.text.trim() == '' ||
-        _confirmPasswordController.text.trim() == '') {
+    if (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+    } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text('Make sure you fill in all the blanks'),
+          content: Text('Make sure the passwords are the same '),
         ),
       );
-      return false;
-    } else {
-      return true;
     }
   }
 
@@ -68,137 +54,117 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.grey[350],
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 17,
-              ),
-              Text(
-                'Hello ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.deepPurple),
-                        borderRadius: BorderRadius.circular(12)),
-                    hintText: 'Email',
-                    fillColor: Colors.grey[200],
-                    filled: true,
+          child: Form(
+            key: formKey,
+            child: AutofillGroup(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 17,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TextField(
-                  obscureText: true,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12)),
-                      hintText: 'Password',
-                      fillColor: Colors.grey[200],
-                      filled: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12)),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TextField(
-                  obscureText: true,
-                  controller: _confirmPasswordController,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12)),
-                      hintText: 'Password Confirm',
-                      fillColor: Colors.grey[200],
-                      filled: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12)),
-                ),
-              ),
-
-              SizedBox(
-                height: 13,
-              ),
-              //Sign in button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: GestureDetector(
-                  onTap: signUp,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(14),
+                  Text(
+                    'Hello ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
                     ),
-                    child: Center(
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                  ),
+
+                  SizedBox(
+                    height: 12,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: EmailFieldWidget(
+                      controller: _emailController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: PasswordFieldWidget(
+                      controller: _passwordController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: PasswordFieldWidget(
+                      controller: _confirmPasswordController,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 13,
+                  ),
+                  //Sign in button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: GestureDetector(
+                      onTap: () {
+                        final form = formKey.currentState!;
+
+                        if (form.validate()) {
+                          TextInput.finishAutofillContext();
+                          final email = _emailController.text.trim();
+
+                          signUp();
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              //register button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Already a member ? ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  SizedBox(
+                    height: 13,
                   ),
-                  GestureDetector(
-                    onTap: widget.showLoginPage,
-                    child: Text(
-                      '  Sign In Now !',
-                      style: TextStyle(
-                        color: Colors.lightBlue,
-                        fontWeight: FontWeight.bold,
+                  //register button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already a member ? ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: widget.showLoginPage,
+                        child: Text(
+                          '  Sign In Now !',
+                          style: TextStyle(
+                            color: Colors.lightBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),

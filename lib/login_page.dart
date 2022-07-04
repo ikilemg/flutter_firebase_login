@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_login/widget/email_field_widget.dart';
+import 'package:flutter_login/widget/password_field_widget.dart';
 import 'dart:ffi';
 import 'package:turkish/turkish.dart';
 import 'package:flutter/material.dart';
@@ -16,24 +19,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  final formKey = GlobalKey<FormState>();
   Future signIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(e.code),
-          content: Text(e.message.toString()),
-        ),
-      );
-    }
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
   }
 
   @override
@@ -49,116 +40,108 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.grey[350],
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 17,
-              ),
-              Text(
-                'Hello again!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.deepPurple),
-                        borderRadius: BorderRadius.circular(12)),
-                    hintText: 'Email',
-                    fillColor: Colors.grey[200],
-                    filled: true,
+          child: Form(
+            key: formKey,
+            child: AutofillGroup(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 17,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TextField(
-                  obscureText: true,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12)),
-                      hintText: 'Password',
-                      fillColor: Colors.grey[200],
-                      filled: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12)),
-                ),
-              ),
-
-              SizedBox(
-                height: 13,
-              ),
-              //Sign in button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: GestureDetector(
-                  onTap: signIn,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(14),
+                  Text(
+                    'Hello ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
                     ),
-                    child: Center(
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                  ),
+
+                  SizedBox(
+                    height: 12,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: EmailFieldWidget(
+                      controller: _emailController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: PasswordFieldWidget(
+                      controller: _passwordController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+
+                  //Sign in button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: GestureDetector(
+                      onTap: () {
+                        final form = formKey.currentState!;
+
+                        if (form.validate()) {
+                          TextInput.finishAutofillContext();
+                          final email = _emailController.text.trim();
+
+                          signIn();
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              //register button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Not a member ? ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  SizedBox(
+                    height: 13,
                   ),
-                  GestureDetector(
-                    onTap: widget.showRegisterPage,
-                    child: Text(
-                      '  Register Now !',
-                      style: TextStyle(
-                        color: Colors.lightBlue,
-                        fontWeight: FontWeight.bold,
+                  //register button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already a member ? ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: widget.showRegisterPage,
+                        child: Text(
+                          '  Sign In Now !',
+                          style: TextStyle(
+                            color: Colors.lightBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),
