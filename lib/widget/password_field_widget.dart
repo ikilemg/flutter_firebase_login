@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -18,21 +18,6 @@ class PasswordFieldWidget extends StatefulWidget {
 
 class _PasswordFieldWidgetState extends State<PasswordFieldWidget> {
   bool isHidden = true;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    widget.controller.addListener((onListen));
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener((onListen));
-    super.dispose();
-  }
-
-  void onListen() => setState(() {});
 
   @override
   Widget build(BuildContext context) => TextFormField(

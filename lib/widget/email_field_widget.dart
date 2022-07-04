@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +49,7 @@ class _EmailFieldWidgetState extends State<EmailFieldWidget> {
                   ),
                   onPressed: () => widget.controller.clear(),
                 ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(12),
@@ -55,7 +58,7 @@ class _EmailFieldWidgetState extends State<EmailFieldWidget> {
               borderSide: BorderSide(color: Colors.deepPurple),
               borderRadius: BorderRadius.circular(20)),
           hintText: 'Email',
-          fillColor: Colors.grey[200],
+          fillColor: Colors.white,
           filled: true,
         ),
         keyboardType: TextInputType.emailAddress,

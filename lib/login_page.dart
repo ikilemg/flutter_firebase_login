@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login/widget/email_field_widget.dart';
 import 'package:flutter_login/widget/password_field_widget.dart';
-import 'dart:ffi';
+
 import 'package:turkish/turkish.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 17,
                   ),
                   Text(
-                    'Hello ',
+                    'LOG IN ',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,

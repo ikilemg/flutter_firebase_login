@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login/widget/email_field_widget.dart';
 import 'package:flutter_login/widget/password_field_widget.dart';
+import 'package:flutter_login/widget/username_field_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -22,6 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _usernameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   Future signUp() async {
@@ -30,6 +34,12 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
+      username:
+      _usernameController.text.trim();
+
+      createUser(
+          name: _usernameController.text.trim(),
+          email: _emailController.text.trim());
     } else {
       showDialog(
         context: context,
@@ -45,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _usernameController.dispose();
     super.dispose();
   }
 
@@ -64,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 17,
                   ),
                   Text(
-                    'Hello ',
+                    'REGISTER ',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -73,6 +84,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   SizedBox(
                     height: 12,
+                  ),
+                  //USERNAME
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: UsernameFieldWidget(
+                      controller: _usernameController,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 5,
                   ),
 
                   Padding(
@@ -169,5 +191,16 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  Future createUser({required String name, required String email}) async {
+    final docUser = FirebaseFirestore.instance.collection('users').doc('my-id');
+
+    final json = {
+      'name': name,
+      'email': email,
+    };
+
+    await docUser.set(json);
   }
 }
