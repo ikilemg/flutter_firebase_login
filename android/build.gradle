@@ -30,3 +30,7 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+git config --global user.name "ikilemg"
+git config --global user.email "cevik190506@gmail.com"
