@@ -44,21 +44,45 @@ class _LoginPageState extends State<LoginPage> {
             key: formKey,
             child: AutofillGroup(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 17,
+                    height: 195,
                   ),
-                  Text(
-                    'LOG IN ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                  Center(
+                    child: Container(
+                      height: 50.0,
+                      width: 650.0,
+                      child: const Align(
+                        alignment: FractionalOffset(0.11, 0.6),
+                        child: Text(
+                          'Login ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      height: 25.0,
+                      width: 650.0,
+                      child: const Align(
+                        alignment: FractionalOffset(0.165, 0.6),
+                        child: Text(
+                          'Enter Account Details to Continue',
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 
                   SizedBox(
-                    height: 12,
+                    height: 30,
                   ),
 
                   Padding(
@@ -68,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -77,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 25,
                   ),
 
                   //Sign in button
@@ -103,9 +127,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: Center(
                           child: Text(
-                            'Sign Up',
+                            'Sign in',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -115,24 +139,22 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 13,
+                    height: 25,
                   ),
                   //register button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already a member ? ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        'Don\'t have an account ?',
+                        style: TextStyle(),
                       ),
                       GestureDetector(
                         onTap: widget.showRegisterPage,
                         child: Text(
-                          '  Sign In Now !',
+                          '  Sign Up Now !',
                           style: TextStyle(
-                            color: Colors.lightBlue,
+                            color: Colors.blueGrey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

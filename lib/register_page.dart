@@ -72,18 +72,27 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 17,
+                    height: 0,
                   ),
-                  Text(
-                    'REGISTER ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                  Center(
+                    child: Container(
+                      height: 50.0,
+                      width: 650.0,
+                      child: const Align(
+                        alignment: FractionalOffset(0.18, 0.6),
+                        child: Text(
+                          'Create account ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 
                   SizedBox(
-                    height: 12,
+                    height: 25,
                   ),
                   //USERNAME
                   Padding(
@@ -94,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
 
                   SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
 
                   Padding(
@@ -104,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -113,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -123,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
 
                   SizedBox(
-                    height: 13,
+                    height: 25,
                   ),
                   //Sign in button
                   Padding(
@@ -148,9 +157,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         child: Center(
                           child: Text(
-                            'Sign Up',
+                            'Create',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -160,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 13,
+                    height: 25,
                   ),
                   //register button
                   Row(
@@ -177,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Text(
                           '  Sign In Now !',
                           style: TextStyle(
-                            color: Colors.lightBlue,
+                            color: Colors.blueGrey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
